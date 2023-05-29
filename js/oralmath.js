@@ -75,6 +75,10 @@ function CreateA4(category){
         formulaMode2 = 4;
         [hardMin,hardMin2,hardMax,hardMax2] = [10,10,100,100];
         DrawFormula(TowFormula2,rowTotal,false);
+    }else if(category == 4){
+        //除法带余
+        [hardMin,hardMin2,hardMax,hardMax2] = [2,2,9,9];
+        DrawFormula(FormulaDivide2,rowTotal,false);
     }
 
     //二维码
@@ -300,10 +304,19 @@ function FormulaCross3() {
 }
 
 //除号
-function FormulaDivid() {
+function FormulaDivide() {
     arg1 = RandomInt(hardMin, hardMax);
     arg2 = RandomInt(hardMin2, hardMax2);
     let res = arg1 * arg2;
+    return res + "  ÷  " + arg2 + " =";
+}
+
+//除号+余
+function FormulaDivide2() {
+    arg1 = RandomInt(hardMin, hardMax);
+    arg2 = RandomInt(hardMin2, hardMax2);
+    arg3 = RandomInt(hardMin, hardMax);
+    let res = arg1 * arg2 + arg3;
     return res + "  ÷  " + arg2 + " =";
 }
 
