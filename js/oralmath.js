@@ -77,7 +77,7 @@ function CreateA4(category){
         DrawFormula(TowFormula2,rowTotal,false);
     }else if(category == 4){
         //除法带余
-        [hardMin,hardMin2,hardMax,hardMax2] = [2,2,9,9];
+        [hardMin,hardMin2,hardMax,hardMax2] = [2,1,9,9];
         DrawFormula(FormulaDivide2,rowTotal,false);
     }
 
@@ -314,8 +314,8 @@ function FormulaDivide() {
 //除号+余
 function FormulaDivide2() {
     arg1 = RandomInt(hardMin, hardMax);
-    arg2 = RandomInt(hardMin2, hardMax2);
-    arg3 = RandomInt(hardMin, hardMax);
+    arg2 = RandomInt(hardMin, hardMax);
+    arg3 = RandomInt(hardMin2, hardMax2);
     let res = arg1 * arg2 + arg3;
     return res + "  ÷  " + arg2 + " =";
 }
