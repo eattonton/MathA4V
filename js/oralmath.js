@@ -6,7 +6,7 @@ const boardHeight = canvas.height;
 //////////////////////
 //程序入口
 ////////////////////
-function Start(){
+function Start() {
 
 }
 
@@ -34,25 +34,25 @@ function WriteText(str1, x, y, hei, scale) {
     ctx.fillStyle = "#000000";
     ctx.fillText(str1, x * scale, y * scale);
 
-    return {txt:str1,x:x,y:y,h:hei,s:scale};
+    return { txt: str1, x: x, y: y, h: hei, s: scale };
 }
 
 const rowTotal = 6;
 const rowHeight = 4.0;
 //计算的范围
-var hardMin,hardMin2,hardMax,hardMax2;
+var hardMin, hardMin2, hardMax, hardMax2;
 //公式的类型
-var formulaMode1,formulaMode2;
+var formulaMode1, formulaMode2;
 var grade = 1;
 
-function CreateA4(category){
+function CreateA4(category) {
     var toastDlg = new Toast({
-        text:"生成中"
+        text: "生成中"
     });
     toastDlg.Show();
     //ctx.clearRect(0,0,boardWidth,boardHeight);
     ctx.fillStyle = "white";
-    ctx.fillRect(0,0,boardWidth,boardHeight);
+    ctx.fillRect(0, 0, boardWidth, boardHeight);
     formulaMode1 = 1;
     formulaMode2 = 2;
     //1.title
@@ -60,35 +60,35 @@ function CreateA4(category){
     //2.sub-title
     WriteTextsH(["班级________", "姓名________", "用时________", "得分________"], 2.5, 3.5, 0.5);
     //3.subjects
-    if(category == 1){
+    if (category == 1) {
         //100以内
-        [hardMin,hardMin2,hardMax,hardMax2] = [10,10,100,100];
+        [hardMin, hardMin2, hardMax, hardMax2] = [10, 10, 100, 100];
         //绘制公式的
-        DrawFormula(Formula,rowTotal,true);
-    }else if(category == 2){
+        DrawFormula(Formula, rowTotal, true);
+    } else if (category == 2) {
         //连加 连减
         formulaMode2 = 4;
-        [hardMin,hardMin2,hardMax,hardMax2] = [10,10,100,100];
-        DrawFormula(TowFormula,rowTotal,true);
-    }else if(category == 3){
+        [hardMin, hardMin2, hardMax, hardMax2] = [10, 10, 100, 100];
+        DrawFormula(TowFormula, rowTotal, true);
+    } else if (category == 3) {
         //连加减乘除
         formulaMode2 = 4;
-        [hardMin,hardMin2,hardMax,hardMax2] = [10,10,100,100];
-        DrawFormula(TowFormula2,rowTotal,false);
-    }else if(category == 4){
+        [hardMin, hardMin2, hardMax, hardMax2] = [10, 10, 100, 100];
+        DrawFormula(TowFormula2, rowTotal, false);
+    } else if (category == 4) {
         //除法带余
-        [hardMin,hardMin2,hardMax,hardMax2] = [2,1,9,9];
-        DrawFormula(FormulaDivide2,rowTotal,false);
+        [hardMin, hardMin2, hardMax, hardMax2] = [2, 1, 9, 9];
+        DrawFormula(FormulaDivide2, rowTotal, false);
     }
 
     //二维码
-    DrawImage('./qr.png',()=>{
+    DrawImage('./qr.png', () => {
         toastDlg.Close();
         ShowImageDlg();
     });
 }
 
-function DrawFormula(cb,num,bDrawV,startY){
+function DrawFormula(cb, num, bDrawV, startY) {
     startY = startY || 5.0;
     let rowY = startY;
     if (typeof cb == "function") {
@@ -96,7 +96,7 @@ function DrawFormula(cb,num,bDrawV,startY){
             rowY = startY + i * rowHeight;
             let arr1 = WriteTextsH([cb(), cb(), cb(), cb()], 1.5, rowY, 0.5);
             //绘制竖式公式
-            if(bDrawV) DrawFormulaVerticals(arr1);
+            if (bDrawV) DrawFormulaVerticals(arr1);
         }
     }
     return rowY;
@@ -112,19 +112,19 @@ function Formula() {
     } else if (quest_mode1 == 2) {
         str1 = FormulaMinus();
     } else if (quest_mode1 == 3) {
-        if(grade <= 2){
+        if (grade <= 2) {
             str1 = FormulaCross2();  //基本乘法表
-        }else{
+        } else {
             str1 = FormulaCross();
         }
-    } 
+    }
     //空格补齐
     str1 = MergeBlank(str1);
     return str1;
 }
 
 //连加连减公式
-function TowFormula(){
+function TowFormula() {
     let str1 = "";
     //做法 + - x /
     quest_mode1 = RandomInt(formulaMode1, formulaMode2);
@@ -133,7 +133,7 @@ function TowFormula(){
     } else if (quest_mode1 == 2) {
         str1 = TowFormulaMinus();
     } else if (quest_mode1 == 3) {
-        str1 = TowFormulaAddMinus();   
+        str1 = TowFormulaAddMinus();
     } else if (quest_mode1 == 4) {
         str1 = TowFormulaMinusAdd();
     }
@@ -143,7 +143,7 @@ function TowFormula(){
 }
 
 //连加减乘除
-function TowFormula2(){
+function TowFormula2() {
     let str1 = "";
     //做法 + - x /
     quest_mode1 = RandomInt(formulaMode1, formulaMode2);
@@ -152,7 +152,7 @@ function TowFormula2(){
     } else if (quest_mode1 == 2) {
         str1 = TowFormulaMinusCross();
     } else if (quest_mode1 == 3) {
-        str1 = TowFormulaAddDivide();   
+        str1 = TowFormulaAddDivide();
     } else if (quest_mode1 == 4) {
         str1 = TowFormulaMinusDivide();
     }
@@ -183,7 +183,7 @@ function Formula3() {
         str1 = FormulaAdd3();
     } else if (quest_mode1 == 2) {
         str1 = FormulaMinus3();
-    }else if (quest_mode1 == 3) {
+    } else if (quest_mode1 == 3) {
         str1 = FormulaCross3();
     }
     //空格补齐
@@ -202,18 +202,18 @@ function FormulaAdd() {
 //进位
 function FormulaAdd2() {
     let str1 = "";
-    for(let i=0;i<1000;i++){
+    for (let i = 0; i < 1000; i++) {
         arg1 = RandomInt(hardMin, hardMax);
         arg2 = RandomInt(hardMin2, hardMax2);
         str1 = arg1 + "  +  " + arg2 + " =";
         //判断是否满足进位条件
         let t1 = arg1 % 10;
         let t2 = arg1 % 10;
-        if((t1 + t2) >= 10){
+        if ((t1 + t2) >= 10) {
             break;
         }
     }
-    
+
     return str1;
 }
 
@@ -223,10 +223,10 @@ function FormulaAdd3() {
     arg2 = RandomInt(hardMin2, hardMax2);
     let md = RandomInt(0, 1);
     let res = arg1 + arg2;
-    if(md == 0){
-        return "(   )" + "+" + arg2 + "=" +res;
-    }else{
-        return arg1 + "+" + "(   )" + "="+res;
+    if (md == 0) {
+        return "(   )" + "+" + arg2 + "=" + res;
+    } else {
+        return arg1 + "+" + "(   )" + "=" + res;
     }
 }
 
@@ -243,7 +243,7 @@ function FormulaMinus() {
 //退位
 function FormulaMinus2() {
     let str1 = "";
-    for(let i=0;i<1000;i++){
+    for (let i = 0; i < 1000; i++) {
         arg1 = RandomInt(hardMin, hardMax);
         arg2 = RandomInt(hardMin2, hardMax2);
         if (arg2 > arg1) {
@@ -253,11 +253,11 @@ function FormulaMinus2() {
         //判断是否满足进位条件
         let t1 = arg1 % 10;
         let t2 = arg1 % 10;
-        if((t1 - t2) < 0){
+        if ((t1 - t2) < 0) {
             break;
         }
     }
-    
+
     return str1;
 }
 
@@ -270,10 +270,10 @@ function FormulaMinus3() {
     }
     let md = RandomInt(0, 1);
     let res = arg1 - arg2;
-    if(md == 0){
-        return "(   )" + "-" + arg2 + "=" +res;
-    }else{
-        return arg1 + "-" + "(   )" + "="+res;
+    if (md == 0) {
+        return "(   )" + "-" + arg2 + "=" + res;
+    } else {
+        return arg1 + "-" + "(   )" + "=" + res;
     }
 }
 
@@ -297,7 +297,7 @@ function FormulaCross3() {
     arg2 = RandomInt(hardMin2, hardMax2);
     arg2 = arg2 * 10;
     let md = RandomInt(0, 1);
-    if(md == 0){
+    if (md == 0) {
         return arg1 + "  X  " + arg2 + " =";
     }
     return arg2 + "  X  " + arg1 + " =";
@@ -329,37 +329,37 @@ function TwoFormulaAdd() {
 }
 
 //连减
-function TowFormulaMinus(){
-    arg1 = RandomInt(hardMin+10, hardMax);
+function TowFormulaMinus() {
+    arg1 = RandomInt(hardMin + 10, hardMax);
     arg2 = RandomInt(hardMin2, arg1 - 1);
-    while(arg2 > arg1){
+    while (arg2 > arg1) {
         arg2 = RandomInt(hardMin2, arg2 - 1);
     }
     let rangMax3 = (arg1 - arg2);
     arg3 = RandomInt(1, rangMax3);
-    while(arg3 > rangMax3){
+    while (arg3 > rangMax3) {
         arg3 = RandomInt(1, rangMax3);
     }
     return arg1 + "-" + arg2 + "-" + arg3 + "=";
 }
 
 //混合加减
-function TowFormulaAddMinus(){
+function TowFormulaAddMinus() {
     arg1 = RandomInt(hardMin, hardMax);
     arg2 = RandomInt(hardMin2, hardMax2);
     let rangMax3 = (arg1 + arg2);
     arg3 = RandomInt(hardMin2, hardMax2);
-    while(arg3 > rangMax3){
+    while (arg3 > rangMax3) {
         arg3 = RandomInt(1, hardMax2);
     }
     return arg1 + "+" + arg2 + "-" + arg3 + "=";
 }
 
 //混合减加
-function TowFormulaMinusAdd(){
-    arg1 = RandomInt(hardMin+10, hardMax);
+function TowFormulaMinusAdd() {
+    arg1 = RandomInt(hardMin + 10, hardMax);
     arg2 = RandomInt(hardMin2, arg1 - 1);
-    while(arg2 > arg1){
+    while (arg2 > arg1) {
         arg2 = RandomInt(hardMin2, arg2 - 1);
     }
     arg3 = RandomInt(hardMin2, hardMax2);
@@ -367,40 +367,75 @@ function TowFormulaMinusAdd(){
 }
 
 //混合加乘
-function TowFormulaAddCross(){
+function TowFormulaAddCross() {
     arg1 = RandomInt(hardMin, hardMax);
     arg2 = RandomInt(1, 10);
     arg3 = RandomInt(1, 10);
+
+    let tmp1 = (arg1 + arg2) * arg3;
+    let md1 = RandomInt(0, 3);
+    if (md1 == 0 && tmp1 <= 100) {
+        return "(" + arg1 + " + " + arg2 + ") X " + arg3 + "=";
+    } else if (md1 == 1 && tmp1 <= 100) {
+        return arg3 + " X (" + arg1 + " + " + arg2 + ")=";
+    } else if (md1 == 2) {
+        return arg3 + " X " + arg2 + " + " + arg1 + "=";
+    }
     return arg1 + " + " + arg2 + " X " + arg3 + "=";
 }
 
-function TowFormulaMinusCross(){
+function TowFormulaMinusCross() {
     arg1 = RandomInt(hardMin, hardMax);
     arg2 = RandomInt(1, 10);
     arg3 = RandomInt(1, 10);
+
+    while (arg1 < arg2) {
+        arg1 = RandomInt(arg2, hardMax);
+    }
+
+    let tmp2 = arg1 - arg2;
+    let md1 = RandomInt(0, 1);
+    if (md1 == 0 && tmp2 < 10) {
+        return "(" + arg1 + " - " + arg2 + ")X " + arg3 + "=";
+    }
+
     let tmp1 = arg2 * arg3
-    while(arg1 < tmp1){
-        arg1 = RandomInt(tmp1, hardMax);
+    if (arg1 < tmp1) {
+        return arg2 + " X " + arg3 + " - " + arg1 + "=";
     }
     return arg1 + " - " + arg2 + " X " + arg3 + "=";
 }
 
-function TowFormulaAddDivide(){
+function TowFormulaAddDivide() {
     arg1 = RandomInt(hardMin, hardMax);
     arg2 = RandomInt(1, 10);
     arg3 = RandomInt(1, 10);
-    let tmp1 = arg2*arg3;
+
+    let tmp1 = arg2 * arg3;
+
+    let md1 = RandomInt(0, 1);
+    if (md1 == 0 && arg1 < tmp1) {
+        return "(" + arg1 + " + " + (tmp1 - arg1) + ")÷" + arg3 + "=";
+    }
+
     return arg1 + " + " + tmp1 + " ÷ " + arg3 + "=";
 }
 
-function TowFormulaMinusDivide(){
+function TowFormulaMinusDivide() {
     arg1 = RandomInt(hardMin, hardMax);
     arg2 = RandomInt(1, 10);
     arg3 = RandomInt(1, 10);
-    let tmp1 = arg2*arg3;
-    while(arg1 < tmp1){
-        arg1 = RandomInt(tmp1, hardMax);
+    let tmp1 = arg2 * arg3;
+
+    let md1 = RandomInt(0, 1);
+    if (md1 == 0 && arg1 > tmp1) {
+        return "("+arg1 + "-" + (arg1-tmp1) + ") ÷ " + arg3 + "=";
     }
+
+    if (arg2 < arg1) {
+        return tmp1 + " ÷ " + arg3 + " - " + arg1 + "=";
+    }
+
     return arg1 + " - " + tmp1 + " ÷ " + arg3 + "=";
 }
 
@@ -425,11 +460,11 @@ function MergeBlank(inputStr, strLen) {
 //左侧加字符
 function MergeBlankLeft(inputStr, strLen) {
     strLen = strLen || inputStr.length;
-    if(inputStr.length >= strLen){
+    if (inputStr.length >= strLen) {
         return inputStr;
     }
     let str2 = "";
-    for (let i = 0, len =  (strLen - inputStr.length); i < len; i++) {
+    for (let i = 0, len = (strLen - inputStr.length); i < len; i++) {
         str2 = str2 + "  ";
     }
     str2 = str2 + inputStr;
@@ -445,13 +480,13 @@ function RandomInt(min, max) {
 }
 
 //显示生成的题目图片，长按保存
-function ShowImageDlg(){
+function ShowImageDlg() {
     let strImg = "<img ";
-    strImg += "src="+ canvas.toDataURL('png', 1.0);
+    strImg += "src=" + canvas.toDataURL('png', 1.0);
     strImg += " style='width:350px;height:500px;'></img>";
     let dlg1 = new Dialog({
-        title:"长按图片，保存下载",
-        text:strImg
+        title: "长按图片，保存下载",
+        text: strImg
     });
 
     dlg1.Show();
@@ -497,42 +532,41 @@ Date.prototype.format = function (format) {
 }
 
 //绘制图片
-function DrawImage(img0,cb) {
+function DrawImage(img0, cb) {
     let imgObj = new Image();
     imgObj.src = img0;
     imgObj.onload = function () {
-        ctx.drawImage(imgObj, 10, 10,150,150);
+        ctx.drawImage(imgObj, 10, 10, 150, 150);
         if (typeof cb == "function") {
             cb();
         }
     }
 }
 
-String.prototype.ATrim=function(){
-    return this.replace(/(\s)*/g,"");
+String.prototype.ATrim = function () {
+    return this.replace(/(\s)*/g, "");
 }
 
 //从公式中得到元素
-function GetItemsFromFormula(str1){
+function GetItemsFromFormula(str1) {
     str1 = str1.ATrim();
     let arr1 = [];
-    for(let i=0;i<str1.length;i++){
+    for (let i = 0; i < str1.length; i++) {
         let str2 = str1[i];
-        if(["+","-","X","÷","="].indexOf(str2) >= 0){
+        if (["+", "-", "X", "÷", "="].indexOf(str2) >= 0) {
             arr1.push(str2);
             arr1.push("");
-        }else{
-            if(arr1.length == 0){
+        } else {
+            if (arr1.length == 0) {
                 arr1.push(str2);
-            }else
-            {
-                arr1[arr1.length-1] += str2;
+            } else {
+                arr1[arr1.length - 1] += str2;
             }
         }
-        
+
     }
- 
-    return arr1.filter((val)=>{
+
+    return arr1.filter((val) => {
         if (val !== "" && val != undefined) {
             return true;
         }
@@ -541,35 +575,35 @@ function GetItemsFromFormula(str1){
 }
 
 //绘制竖式方程
-function DrawFormulaVerticals(arr1){
-     for(let i=0;i<arr1.length;i++){
+function DrawFormulaVerticals(arr1) {
+    for (let i = 0; i < arr1.length; i++) {
         DrawFormulaVertical(arr1[i]);
-     }
+    }
 }
 
-function DrawFormulaVertical(oTxt){
+function DrawFormulaVertical(oTxt) {
     let str1 = oTxt.txt;
     let x = oTxt.x;
     let y = oTxt.y;
-    let hei = oTxt.h+0.05;
+    let hei = oTxt.h + 0.05;
     let arr1 = GetItemsFromFormula(str1);
 
-    if(arr1.length >= 4){
-        let arg1 = MergeBlankLeft(arr1[0],2);
-        let arg2 = MergeBlankLeft(arr1[2],2);
+    if (arr1.length >= 4) {
+        let arg1 = MergeBlankLeft(arr1[0], 2);
+        let arg2 = MergeBlankLeft(arr1[2], 2);
         let op1 = arr1[1];
-        WriteText(arg1, x+0.8, y+0.6, hei);
-        WriteText(arg2, x+0.8, y+1.2, hei);
-        WriteText(op1, x, y+1.2, hei);
+        WriteText(arg1, x + 0.8, y + 0.6, hei);
+        WriteText(arg2, x + 0.8, y + 1.2, hei);
+        WriteText(op1, x, y + 1.2, hei);
         //画直线
-        WriteText("______",x, y+1.3, hei);
-        if(arr1.length >= 6){
-            let arg3 = MergeBlankLeft(arr1[4],2);
+        WriteText("______", x, y + 1.3, hei);
+        if (arr1.length >= 6) {
+            let arg3 = MergeBlankLeft(arr1[4], 2);
             let op2 = arr1[3];
-            WriteText("     ",x, y+1.8, hei);
-            WriteText(arg3,x+0.8, y+2.4, hei);
-            WriteText(op2, x, y+2.4, hei);
-            WriteText("______",x, y+2.5, hei);
+            WriteText("     ", x, y + 1.8, hei);
+            WriteText(arg3, x + 0.8, y + 2.4, hei);
+            WriteText(op2, x, y + 2.4, hei);
+            WriteText("______", x, y + 2.5, hei);
         }
     }
 }
