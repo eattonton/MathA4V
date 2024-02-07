@@ -79,6 +79,13 @@ function CreateA4(category) {
         //除法带余
         [hardMin, hardMin2, hardMax, hardMax2] = [2, 1, 9, 9];
         DrawFormula(FormulaDivide2, rowTotal, false);
+    }else if(category == 5){
+        grade  =3;
+        //三年级(一位除数)
+        [hardMin,hardMin2,hardMax,hardMax2] = [100,2,999,10];
+        formulaMode1 = 4;
+        formulaMode2 = 4;
+        DrawFormula(FormulaDivid3, rowTotal, false);
     }
 
     //二维码
@@ -318,6 +325,13 @@ function FormulaDivide2() {
     arg3 = RandomInt(hardMin2, hardMax2);
     let res = arg1 * arg2 + arg3;
     return res + "  ÷  " + arg2 + " =";
+}
+
+//除号 带余数
+function FormulaDivid3(){
+    arg1 = RandomInt(hardMin, hardMax);
+    arg2 = RandomInt(hardMin2, hardMax2);
+    return arg1 + "  ÷  " + arg2 + " =";
 }
 
 //连加
