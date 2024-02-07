@@ -446,7 +446,7 @@ function TowFormulaMinusDivide() {
         return "("+arg1 + "-" + (arg1-tmp1) + ") ÷ " + arg3 + "=";
     }
 
-    if (arg2 < arg1) {
+    if (arg2 > arg1) {
         return tmp1 + " ÷ " + arg3 + " - " + arg1 + "=";
     }
 
