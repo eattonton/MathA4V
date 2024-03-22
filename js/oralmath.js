@@ -86,6 +86,13 @@ function CreateA4(category) {
         formulaMode1 = 4;
         formulaMode2 = 4;
         DrawFormula(FormulaDivid3, rowTotal, false);
+    }else if(category == 6){
+        grade =3;
+        //三年级(乘法二位)
+        [hardMin,hardMin2,hardMax,hardMax2] = [10,10,99,99];
+        formulaMode1 = 3;
+        formulaMode2 = 3;
+        DrawFormula(Formula, rowTotal, false);
     }
 
     //二维码
