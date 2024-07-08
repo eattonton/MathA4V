@@ -19,7 +19,7 @@ function WriteTextsH(arr1, x, y, hei, scale) {
         x2 = x2 + tbWid;
         let oTxt = WriteText(arr1[i], x2, y, hei, scale);
         //计算宽度
-        tbWid = arr1[i].length * hei * 0.8;
+        tbWid = arr1[i].length * hei * 0.7;
         arr2.push(oTxt);
     }
 
@@ -38,7 +38,7 @@ function WriteText(str1, x, y, hei, scale) {
 }
 
 const rowTotal = 6;
-const rowHeight = 4.0;
+var rowHeight = 4.0;
 //计算的范围
 var hardMin, hardMin2, hardMax, hardMax2;
 //公式的类型
@@ -93,6 +93,26 @@ function CreateA4(category) {
         formulaMode1 = 3;
         formulaMode2 = 3;
         DrawFormula(Formula, rowTotal, false);
+    }else if(category == 7){
+        grade =3;
+        //三年级(乘法二位)
+        [hardMin,hardMin2,hardMax,hardMax2] = [20,10,99,99];
+        formulaMode1 = 1;
+        formulaMode2 = 4;
+        rowHeight = 1.0;
+        WriteText("一、口算题", 1.5, 4.8, 0.5);
+        let rowY = DrawFormula(Formula, 5, false, 5.8);
+        WriteText("二、笔算", 1.5, rowY+1.2, 0.5);
+        rowHeight = 4.0;
+        formulaMode1 = 3;
+        formulaMode2 = 4;
+        rowY = DrawFormula(Formula, 2, false,rowY+2.2);
+        rowY += rowHeight;
+        WriteText("三、递等式", 1.5, rowY, 0.5);
+        rowHeight = 4.0;
+        formulaMode1 = 1;
+        formulaMode2 = 4;
+        rowY = DrawFormula(TowFormula2, 1, false,rowY+1.0);
     }
 
     //二维码
@@ -131,9 +151,11 @@ function Formula() {
         } else {
             str1 = FormulaCross();
         }
+    } else if(quest_mode1 == 4){
+        str1 = FormulaDivide2();
     }
     //空格补齐
-    str1 = MergeBlank(str1);
+    str1 = MergeBlank(str1,14);
     return str1;
 }
 
@@ -248,6 +270,9 @@ function FormulaAdd3() {
 function FormulaMinus() {
     arg1 = RandomInt(hardMin, hardMax);
     arg2 = RandomInt(hardMin2, hardMax2);
+    while (arg1 == arg2) {
+        arg2 = RandomInt(hardMin2, hardMax2);
+    }
     if (arg2 > arg1) {
         [arg1, arg2] = [arg2, arg1];
     }
@@ -329,9 +354,9 @@ function FormulaDivide() {
 function FormulaDivide2() {
     arg1 = RandomInt(hardMin, hardMax);
     arg2 = RandomInt(hardMin, hardMax);
-    arg3 = RandomInt(hardMin2, hardMax2);
+    arg3 = RandomInt(0, arg2);
     let res = arg1 * arg2 + arg3;
-    return res + "  ÷  " + arg2 + " =";
+    return res + " ÷ " + arg2 + "=";
 }
 
 //除号 带余数
@@ -390,9 +415,14 @@ function TowFormulaMinusAdd() {
 //混合加乘
 function TowFormulaAddCross() {
     arg1 = RandomInt(hardMin, hardMax);
-    arg2 = RandomInt(1, 10);
-    arg3 = RandomInt(1, 10);
-
+    if(grade <= 2 ){
+        arg2 = RandomInt(1, 10);
+        arg3 = RandomInt(1, 10);
+    }else{
+        arg2 = RandomInt(hardMin2, hardMax2);
+        arg3 = RandomInt(hardMin2, hardMax2);
+    }
+ 
     let tmp1 = (arg1 + arg2) * arg3;
     let md1 = RandomInt(0, 3);
     if (md1 == 0 && tmp1 <= 100) {
@@ -407,8 +437,13 @@ function TowFormulaAddCross() {
 
 function TowFormulaMinusCross() {
     arg1 = RandomInt(hardMin, hardMax);
-    arg2 = RandomInt(1, 10);
-    arg3 = RandomInt(1, 10);
+    if(grade <= 2 ){
+        arg2 = RandomInt(1, 10);
+        arg3 = RandomInt(1, 10);
+    }else{
+        arg2 = RandomInt(hardMin2, hardMax2);
+        arg3 = RandomInt(hardMin2, hardMax2);
+    }
 
     while (arg1 < arg2) {
         arg1 = RandomInt(arg2, hardMax);
@@ -429,8 +464,13 @@ function TowFormulaMinusCross() {
 
 function TowFormulaAddDivide() {
     arg1 = RandomInt(hardMin, hardMax);
-    arg2 = RandomInt(1, 10);
-    arg3 = RandomInt(1, 10);
+    if(grade <= 2 ){
+        arg2 = RandomInt(1, 10);
+        arg3 = RandomInt(1, 10);
+    }else{
+        arg2 = RandomInt(hardMin2, hardMax2);
+        arg3 = RandomInt(hardMin2, hardMax2);
+    }
 
     let tmp1 = arg2 * arg3;
 
@@ -444,8 +484,13 @@ function TowFormulaAddDivide() {
 
 function TowFormulaMinusDivide() {
     arg1 = RandomInt(hardMin, hardMax);
-    arg2 = RandomInt(1, 10);
-    arg3 = RandomInt(1, 10);
+    if(grade <= 2 ){
+        arg2 = RandomInt(1, 10);
+        arg3 = RandomInt(1, 10);
+    }else{
+        arg2 = RandomInt(hardMin2, hardMax2);
+        arg3 = RandomInt(hardMin2, hardMax2);
+    }
     let tmp1 = arg2 * arg3;
 
     let md1 = RandomInt(0, 1);
