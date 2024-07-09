@@ -44,6 +44,7 @@ var hardMin, hardMin2, hardMax, hardMax2;
 //公式的类型
 var formulaMode1, formulaMode2;
 var grade = 1;
+var isOral = false;
 
 function CreateA4(category) {
     var toastDlg = new Toast({
@@ -96,12 +97,15 @@ function CreateA4(category) {
     }else if(category == 7){
         grade =3;
         //三年级(乘法二位)
-        [hardMin,hardMin2,hardMax,hardMax2] = [20,10,99,99];
+        [hardMin,hardMin2,hardMax,hardMax2] = [10,10,99,50];
         formulaMode1 = 1;
         formulaMode2 = 4;
         rowHeight = 1.0;
+        isOral = true;
         WriteText("一、口算题", 1.5, 4.8, 0.5);
         let rowY = DrawFormula(Formula, 5, false, 5.8);
+        [hardMin,hardMin2,hardMax,hardMax2] = [20,10,99,99];
+        isOral = false;
         WriteText("二、笔算", 1.5, rowY+1.2, 0.5);
         rowHeight = 4.0;
         formulaMode1 = 3;
@@ -152,7 +156,11 @@ function Formula() {
             str1 = FormulaCross();
         }
     } else if(quest_mode1 == 4){
-        str1 = FormulaDivide2();
+        if(isOral){
+            str1 = FormulaDivide();
+        }else{
+            str1 = FormulaDivide2();
+        }
     }
     //空格补齐
     str1 = MergeBlank(str1,14);
