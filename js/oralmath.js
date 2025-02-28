@@ -64,21 +64,25 @@ function CreateA4(category) {
     if (category == 1) {
         //100以内
         [hardMin, hardMin2, hardMax, hardMax2] = [10, 10, 100, 100];
+        rowHeight = 4.0;
         //绘制公式的
         DrawFormula(Formula, rowTotal, true);
     } else if (category == 2) {
         //连加 连减
         formulaMode2 = 4;
         [hardMin, hardMin2, hardMax, hardMax2] = [10, 10, 100, 100];
+        rowHeight = 4.0;
         DrawFormula(TowFormula, rowTotal, true);
     } else if (category == 3) {
         //连加减乘除
         formulaMode2 = 4;
         [hardMin, hardMin2, hardMax, hardMax2] = [10, 10, 100, 100];
+        rowHeight = 4.0;
         DrawFormula(TowFormula2, rowTotal, false);
     } else if (category == 4) {
         //除法带余
         [hardMin, hardMin2, hardMax, hardMax2] = [2, 1, 9, 9];
+        rowHeight = 4.0;
         DrawFormula(FormulaDivide2, rowTotal, false);
     }else if(category == 5){
         grade  =3;
@@ -86,6 +90,7 @@ function CreateA4(category) {
         [hardMin,hardMin2,hardMax,hardMax2] = [100,2,999,10];
         formulaMode1 = 4;
         formulaMode2 = 4;
+        rowHeight = 4.0;
         DrawFormula(FormulaDivid3, rowTotal, false);
     }else if(category == 6){
         grade =3;
@@ -93,6 +98,7 @@ function CreateA4(category) {
         [hardMin,hardMin2,hardMax,hardMax2] = [10,10,99,99];
         formulaMode1 = 3;
         formulaMode2 = 3;
+        rowHeight = 4.0;
         DrawFormula(Formula, rowTotal, false);
     }else if(category == 7){
         grade =3;
@@ -117,6 +123,14 @@ function CreateA4(category) {
         formulaMode1 = 1;
         formulaMode2 = 4;
         rowY = DrawFormula(TowFormula2, 1, false,rowY+1.0);
+    }else if(category == 8){
+        grade =4;
+        //四年级（交换定律）
+        [hardMin,hardMin2,hardMax,hardMax2] = [10,10,999,999];
+        formulaMode1 = 1;
+        formulaMode2 = 4;
+        rowHeight = 2.0;
+        DrawFormula(FourFormula, rowTotal*2, false, 5.0, 2);
     }
 
     //二维码
@@ -126,13 +140,18 @@ function CreateA4(category) {
     });
 }
 
-function DrawFormula(cb, num, bDrawV, startY) {
+function DrawFormula(cb, num, bDrawV, startY, numCol) {
     startY = startY || 5.0;
+    numCol = numCol || 4.0;
     let rowY = startY;
     if (typeof cb == "function") {
         for (let i = 0; i < num; i++) {
             rowY = startY + i * rowHeight;
-            let arr1 = WriteTextsH([cb(), cb(), cb(), cb()], 1.5, rowY, 0.5);
+            let rowVals = [];
+            for(let j=0;j<numCol;j++){
+                rowVals.push(cb());
+            }
+            let arr1 = WriteTextsH(rowVals, 1.5, rowY, 0.5);
             //绘制竖式公式
             if (bDrawV) DrawFormulaVerticals(arr1);
         }
@@ -511,6 +530,99 @@ function TowFormulaMinusDivide() {
     }
 
     return arg1 + " - " + tmp1 + " ÷ " + arg3 + "=";
+}
+
+//四则运算+交换定律
+function FourFormula(){
+    let str1 = "";
+    quest_mode1 = RandomInt(formulaMode1, formulaMode2);
+    if(quest_mode1 == 1){
+        str1 = FourFormulaPlusPlus();
+    }else if(quest_mode1 == 2){
+        str1 = FourFormulaMinusMinus();
+    }else if(quest_mode1 == 3){
+        str1 = FourFormulaMultiPlus();
+    }else if(quest_mode1 == 4){
+        str1 = FourFormulaMultiMinus();
+    }
+    
+    //空格补齐
+    str1 = MergeBlank(str1,26);
+    return str1;
+}
+
+function FourFormulaPlusPlus(){
+    //a1+b1+a2+b2
+    let a = RandomInt(1,5) * 100;  //100 ~ 500
+    let a1 = RandomInt(9, a);
+    let a2 = a - a1;    //a = a1 + a2
+
+    let b = RandomInt(1,5) * 100;  //100 ~ 500
+    let b1 = RandomInt(9, b);
+    let b2 = b - b1;    //b = b1 + b2
+
+    if(RandomInt(0,1) == 0)
+    {
+        return a1 + " + " + b1 + " + " + b2 + " + " + a2 + "=";
+    }
+    return a1 + " + " + b1 + " + " + a2 + " + " + b2 + "=";
+}
+
+function FourFormulaMinusMinus(){
+    //b-a1-a2-a3
+    let a = RandomInt(1, 5) * 100;  //100 ~ 500
+    let a1 = RandomInt(9, a);
+    let a2 = a - a1;    //a = a1 + a2
+
+    let a3 = RandomInt(100,200);
+    let a4 = a3 + a;   
+    let b = RandomInt(a4, a4+500);
+
+    let m = RandomInt(0,2);
+    if(m == 0){
+        return b + " - "+ a1 + " - " + a2 + " - " + a3 + "=";
+    }else if(m == 1){
+        return b + " - "+ a1 + " - " + a3 + " - " + a2 + "=";
+    }
+    return b + " - "+ a3 + " - " + a1 + " - " + a2 + "=";
+}
+
+function FourFormulaMultiPlus(){
+    //axb1 + axb2
+    let a = RandomInt(20,500);
+
+    let b = RandomInt(1,5) * 100;  //100 ~ 500
+    let b1 = RandomInt(9, b);
+    let b2 = b - b1;    //b = b1 + b2
+
+    let m = RandomInt(0,3);
+    if(m == 0){
+        return a + " X " + b1 + " + " + a + " X " + b2  + "=";
+    }else if(m == 1){
+        return b1 + " X " + a + " + " + a + " X " + b2  + "=";
+    }else if(m == 2){
+        return a + " X " + b1 + " + " + b2 + " X " + a  + "=";
+    }
+    return b1 + " X " + a + " + " + b2 + " X " + a  + "=";
+}
+
+function FourFormulaMultiMinus(){
+    //axb2 - axb1
+    let a = RandomInt(20,500);
+
+    let b = RandomInt(1,5) * 100;  //100 ~ 500
+    let b1 = RandomInt(1, 99);
+    let b2 = b + b1;    //b2 = b + b1
+
+    let m = RandomInt(0,3);
+    if(m == 0){
+        return b2 + " X " + a + " - " + a + " X " + b1 + "=";
+    }else if(m == 1){
+        return a + " X " + b2 + " - " + b1 + " X " + a + "=";
+    }else if(m == 2){
+        return b2 + " X " + a + " - " + b1 + " X " + a + "=";
+    }
+    return a + " X " + b2 + " - " + a + " X " + b1 + "=";
 }
 
 //把输入和空白的进行组合
