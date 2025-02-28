@@ -595,6 +595,14 @@ function FourFormulaMultiPlus(){
     let b1 = RandomInt(9, b);
     let b2 = b - b1;    //b = b1 + b2
 
+    if(a*b>=10000){
+        if(a > 100){
+            a = parseInt(a/100)+1;
+        }else if(b > 100){
+            b = parseInt(b/100)+1;
+        }
+    }
+
     let m = RandomInt(0,3);
     if(m == 0){
         return a + " X " + b1 + " + " + a + " X " + b2  + "=";
@@ -613,6 +621,14 @@ function FourFormulaMultiMinus(){
     let b = RandomInt(1,5) * 100;  //100 ~ 500
     let b1 = RandomInt(1, 99);
     let b2 = b + b1;    //b2 = b + b1
+
+    if(a*b>=10000){
+        if(a > 100){
+            a = parseInt(a/100)+1;
+        }else if(b > 100){
+            b = parseInt(b/100)+1;
+        }
+    }
 
     let m = RandomInt(0,3);
     if(m == 0){
