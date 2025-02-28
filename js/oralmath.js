@@ -589,7 +589,7 @@ function FourFormulaMinusMinus(){
 
 function FourFormulaMultiPlus(){
     //axb1 + axb2
-    let a = RandomInt(20,500);
+    let a = RandomInt(10,299);
 
     let b = RandomInt(1,5) * 100;  //100 ~ 500
     let b1 = RandomInt(9, b);
@@ -608,7 +608,7 @@ function FourFormulaMultiPlus(){
 
 function FourFormulaMultiMinus(){
     //axb2 - axb1
-    let a = RandomInt(20,500);
+    let a = RandomInt(10,299);
 
     let b = RandomInt(1,5) * 100;  //100 ~ 500
     let b1 = RandomInt(1, 99);
